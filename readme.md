@@ -5,9 +5,13 @@ ChatGPT Collapser is a browser extension that enhances the readability of ChatGP
 
 ## 🚀 Features
 🔹 **Automatic Collapsing** – All but the latest messages are collapsed by default.
+
 🔹 **Expand/Collapse Button** – Toggle visibility of individual messages.
+
 🔹 **Global Expand/Collapse Button** – Collapse or expand all messages with one click.
+
 🔹 **Smooth Animations** – Provides a seamless user experience.
+
 🔹 **Minimal UI Impact** – Integrates neatly with ChatGPT's interface.
 
 ## 📂 Installation
@@ -23,10 +27,12 @@ Once published, you can install the extension from the Chrome Web Store.
 
 ## 🛠️ Usage
 🔹 Click the **collapse/expand button** next to each messages to toggle visibility.
+
 🔹 Use the **global collapse/expand button** (bottom right of screen) to collapse or expand all messages at once.
 
 ## 📝 Known Issues & Future Improvements
 🔹 🔜 Plan to add a settings page for custom behavior.
+
 🔹 🔜 Option to adjust collapsed message height.
 
 ## 💡 Contributing
