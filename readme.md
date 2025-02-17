@@ -4,11 +4,11 @@
 ChatGPT Collapser is a browser extension that enhances the readability of ChatGPT conversations by allowing users to collapse and expand messages easily. It ensures a cleaner, more organized chat experience by automatically collapsing all but the latest response.
 
 ## 🚀 Features
-- 🔹 **Automatic Collapsing** – All but the latest messages are collapsed by default.
-- 🔹 **Expand/Collapse Button** – Toggle visibility of individual messages.
-- 🔹 **Global Expand/Collapse Button** – Collapse or expand all messages with one click.
-- 🔹 **Smooth Animations** – Provides a seamless user experience.
-- 🔹 **Minimal UI Impact** – Integrates neatly with ChatGPT's interface.
+🔹 **Automatic Collapsing** – All but the latest messages are collapsed by default.
+🔹 **Expand/Collapse Button** – Toggle visibility of individual messages.
+🔹 **Global Expand/Collapse Button** – Collapse or expand all messages with one click.
+🔹 **Smooth Animations** – Provides a seamless user experience.
+🔹 **Minimal UI Impact** – Integrates neatly with ChatGPT's interface.
 
 ## 📂 Installation
 ### 🔹 From Chrome Web Store (Coming Soon)
@@ -22,12 +22,12 @@ Once published, you can install the extension from the Chrome Web Store.
 5. The extension is now installed and ready to use!
 
 ## 🛠️ Usage
-- Click the **collapse/expand button** next to each messages to toggle visibility.
-- Use the **global collapse/expand button** (bottom right of screen) to collapse or expand all messages at once.
+🔹 Click the **collapse/expand button** next to each messages to toggle visibility.
+🔹 Use the **global collapse/expand button** (bottom right of screen) to collapse or expand all messages at once.
 
 ## 📝 Known Issues & Future Improvements
-- 🔜 Plan to add a settings page for custom behavior.
-- 🔜 Option to adjust collapsed message height.
+🔹 🔜 Plan to add a settings page for custom behavior.
+🔹 🔜 Option to adjust collapsed message height.
 
 ## 💡 Contributing
 Contributions, issues, and feature requests are welcome! Feel free to fork the repo and submit pull requests.
