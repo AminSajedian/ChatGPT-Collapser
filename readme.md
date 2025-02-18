@@ -34,6 +34,7 @@ Once published, you can install the extension from the Chrome Web Store.
 🔹 🔜 Plan to add a settings page for custom behavior.
 
 🔹 🔜 Option to adjust collapsed message height.
+🔹 🔍 Check out TODO.md for upcoming fixes and features!
 
 ## 💡 Contributing
 Contributions, issues, and feature requests are welcome! Feel free to fork the repo and submit pull requests.
