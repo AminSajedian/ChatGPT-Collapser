@@ -2,7 +2,7 @@
 
 ## 🔧 Known Issues
 - [ ] Old messages do not collapse after having a new messages.
-- [ ] Default Copy and Edit buttons of code block do not stick to the top on scrolling after enabling this extension.
+- [x] Default Copy and Edit buttons of code block do not stick to the top on scrolling after enabling this extension.
 
 ## 🚀 Planned Features
 - [ ] Add a settings page to customize collapse behavior.
