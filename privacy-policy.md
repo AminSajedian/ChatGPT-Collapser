@@ -10,6 +10,6 @@
 - Web history or user activity
 - Any other sensitive or personal data
 
-If you have any questions regarding the privacy policy, please feel free to contact us at [your contact email, if desired].
+If you have any questions regarding the privacy policy, please feel free to contact us at **aminsajedian@gmail.com**.
 
-**Effective Date**: [Insert date]
+**Effective Date**: 2025-02-22
