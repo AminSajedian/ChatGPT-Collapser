@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "ChatGPT Collapser",
-  "version": "1.1",
+  "version": "1.2",
   "description": "Optimize your ChatGPT experience by collapsing long messages for a cleaner, more organized view.",
   "author": "Amin Sajedian",
   "permissions": ["scripting"],

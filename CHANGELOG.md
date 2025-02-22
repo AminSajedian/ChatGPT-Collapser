@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2] - 2025-02-22
+### Changed
+- Increased the max height of collapsed messages.
+
 ## [1.1] - 2025-02-18
 ### Fixed
 - Fixed issue where default Copy and Edit buttons of code blocks did not stick to the top on scrolling.
