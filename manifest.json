@@ -4,7 +4,6 @@
   "version": "1.2",
   "description": "Optimize your ChatGPT experience by collapsing long messages for a cleaner, more organized view.",
   "author": "Amin Sajedian",
-  "permissions": ["scripting"],
   "host_permissions": ["https://chat.openai.com/*", "https://chatgpt.com/*"],
   "action": {
     "default_icon": {
