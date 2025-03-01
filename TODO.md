@@ -1,9 +1,10 @@
 # TODO List
 
 ## 🔧 Known Issues
-- [ ] Fix the issue of collapsing all except the last one on submitting new messages
-- [ ] Modify the height of the last message on chatgpt responding.
-- [ ] Remove white space below the last message while messages are collapsed
+- [x] Place the global button in the form area.
+- [x] Modify the height of the last message on ChatGPT responding. (fixed in version 1.4)
+- [x] Remove white space below the last message while messages are collapsed (fixed in version 1.4)
+- [x] Fix the issue of collapsing all except the last one on submitting new messages (fixed in version 1.4)
 - [x] Add Dynamic theme color support using CSS variables to modify the Colors of buttons and fade-effect on light/dark mode (fixed in version 1.3)
 - [x] Default Copy and Edit buttons of code block do not stick to the top on scrolling after enabling this extension. (fixed in version 1.1)
 

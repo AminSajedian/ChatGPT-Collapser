@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4] - 2025-03-01
+### Fixed
+- Fixed issue where the global collapse/expand button did not properly handle new messages (articles).
+- Ensured the global button dynamically applies to all articles, including newly added ones.
+- Resolved the need for double-clicking individual collapse/expand buttons after using the global button.
+
 ## [1.3] - 2025-02-25
 ### Added
 - Dynamic theme color support using CSS variables (--text-primary, --main-surface-primary, --message-surface).
