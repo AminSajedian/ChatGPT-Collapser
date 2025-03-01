@@ -1,7 +1,7 @@
 # TODO List
 
 ## 🔧 Known Issues
-- [x] Place the global button in the form area.
+- [x] Place the global button in the form area. (fixed in version 1.4)
 - [x] Modify the height of the last message on ChatGPT responding. (fixed in version 1.4)
 - [x] Remove white space below the last message while messages are collapsed (fixed in version 1.4)
 - [x] Fix the issue of collapsing all except the last one on submitting new messages (fixed in version 1.4)
