@@ -1,81 +1,85 @@
 (function () {
   "use strict";
 
-  const htmlElement = document.documentElement;
-  const textPrimaryColor = getComputedStyle(htmlElement)
-    .getPropertyValue("--text-primary")
-    .trim();
-  const mainSurfacePrimary = getComputedStyle(htmlElement)
-    .getPropertyValue("--main-surface-primary")
-    .trim();
-  const messageSurface = getComputedStyle(htmlElement)
-    .getPropertyValue("--message-surface")
-    .trim();
+  /* ------------------------ Constants & Variables ------------------------ */
 
-  // Color Definitions
+  const htmlElement = document.documentElement;
+  const getCSSVar = (varName, fallback) =>
+    getComputedStyle(htmlElement).getPropertyValue(varName).trim() || fallback;
+
   const colors = {
-    collapsedBtnBg: messageSurface || "#f1f1f1",
-    expandedBtnBg: messageSurface || "#dfdfdf",
-    btnColor: textPrimaryColor || "#000",
-    fadeEffectBg: `linear-gradient(to bottom, rgba(255, 255, 255, 0), ${mainSurfacePrimary})`,
-    globalBtnColor: textPrimaryColor || "#000",
-    borderColor: textPrimaryColor || "#888",
+    collapsedBtnBg: getCSSVar("--message-surface", "#f1f1f1"),
+    expandedBtnBg: getCSSVar("--message-surface", "#dfdfdf"),
+    btnColor: getCSSVar("--text-primary", "#000"),
+    fadeEffectBg: `linear-gradient(to bottom, rgba(255, 255, 255, 0), ${getCSSVar(
+      "--main-surface-primary"
+    )})`,
+    globalBtnColor: getCSSVar("--text-primary", "#000"),
+    borderColor: getCSSVar("--text-primary", "#888"),
   };
 
-  // Constants
   const constants = {
     maxCollapsedHeight: "150px",
-    collapseExpandBtnText: "▼",
     fadeEffectHeight: "50px",
-    buttonPadding: "0px 5px",
-    buttonFontSize: "12px",
-    globalButtonFontSize: "10px",
-    borderRadius: "50%",
-    globalBorderRadius: "10px",
+    collapseExpandBtnText: "▼",
+    buttonStyles: {
+      padding: "0px 5px",
+      fontSize: "12px",
+      borderRadius: "50%",
+    },
+    globalButtonStyles: {
+      padding: "3px 7px",
+      fontSize: "10px",
+      borderRadius: "10px",
+      position: "absolute",
+      bottom: "16px",
+      right: "58px",
+      zIndex: "1",
+    },
   };
 
-  function createButton({ text, title, className, styles, onClick }) {
+  let allCollapsed = true;
+
+  /* ------------------------ Helper Functions ------------------------ */
+
+  const createButton = ({ text, title, className, styles, onClick }) => {
     const button = document.createElement("button");
-    if (text) button.innerText = text;
-    button.title = title;
-    button.className = className;
+    Object.assign(button, { innerText: text, title, className });
     Object.assign(button.style, styles);
     if (onClick) button.addEventListener("click", onClick);
     return button;
-  }
+  };
 
-  function toggleArticle(article, button, collapse) {
-    if (collapse) {
-      article.style.maxHeight = constants.maxCollapsedHeight;
-      article.style.overflow = "hidden"; // Ensure content is clipped
-      button.style.background = colors.collapsedBtnBg;
-      button.style.transform = "scaleY(1)";
-      addFadeEffect(article);
-    } else {
-      article.style.maxHeight = `${article.scrollHeight}px`;
-      article.style.overflow = "visible"; // Allow content to expand
-      button.style.background = colors.expandedBtnBg;
-      button.style.transform = "scaleY(-1)";
-      removeFadeEffect(article);
-    }
-    // Update the isCollapsed attribute
+  const toggleCollapseExpandState = (article, button, collapse) => {
+    Object.assign(article.style, {
+      maxHeight: collapse
+        ? constants.maxCollapsedHeight
+        : `${article.scrollHeight}px`,
+      overflow: collapse ? "hidden" : "visible",
+    });
+
+    Object.assign(button.style, {
+      background: collapse ? colors.collapsedBtnBg : colors.expandedBtnBg,
+      transform: collapse ? "scaleY(1)" : "scaleY(-1)",
+    });
+
+    collapse ? addFadeEffect(article) : removeFadeEffect(article);
     article.setAttribute("data-is-collapsed", collapse);
-  }
+  };
 
-  function addFadeEffect(article) {
+  const addFadeEffect = (article) => {
     if (article.querySelector(".fade-effect")) return;
 
-    const targetElement =
-      article.querySelector("div > div > div > div") || article;
-
+    const target = article.querySelector("div > div > div > div") || article;
     const fadeDiv = document.createElement("div");
     fadeDiv.className = "fade-effect";
+
     Object.assign(fadeDiv.style, {
       position: "absolute",
       bottom: "0",
       left: "50%",
       transform: "translateX(-50%)",
-      width: targetElement ? `${targetElement.scrollWidth}px` : "100%",
+      width: `${target.scrollWidth}px`,
       height: constants.fadeEffectHeight,
       background: colors.fadeEffectBg,
       pointerEvents: "none",
@@ -83,24 +87,25 @@
 
     article.style.position = "relative";
     article.appendChild(fadeDiv);
-  }
+  };
 
-  function removeFadeEffect(article) {
-    const fadeDiv = article.querySelector(".fade-effect");
-    if (fadeDiv) fadeDiv.remove();
-  }
+  const removeFadeEffect = (article) => {
+    article.querySelector(".fade-effect")?.remove();
+  };
 
-  function addCollapseExpandButtons() {
-    document.querySelectorAll("article").forEach((article, index, articles) => {
+  /* ------------------------ Main Functions ------------------------ */
+
+  const addCollapseExpandButtons = () => {
+    document.querySelectorAll("article").forEach((article) => {
       if (article.querySelector(".collapse-expand-btn")) return;
 
-      // Initialize isCollapsed state from the attribute or default to false
-      let isCollapsed = article.getAttribute("data-is-collapsed") === "true";
-
-      article.style.clipPath = "inset(0 0 0 0)";
-      article.style.transition = "max-height 0.5s ease-out, overflow 0.5s ease-out";
-      article.style.maxHeight = isCollapsed ? constants.maxCollapsedHeight : "none";
-      article.style.overflow = isCollapsed ? "hidden" : "visible";
+      const isCollapsed = article.getAttribute("data-is-collapsed") === "true";
+      Object.assign(article.style, {
+        clipPath: "inset(0 0 0 0)",
+        transition: "max-height 0.5s ease-out, overflow 0.5s ease-out",
+        maxHeight: isCollapsed ? constants.maxCollapsedHeight : "none",
+        overflow: isCollapsed ? "hidden" : "visible",
+      });
 
       const collapseExpandBtn = createButton({
         text: constants.collapseExpandBtnText,
@@ -112,22 +117,22 @@
           right: "-30px",
           zIndex: "1",
           cursor: "pointer",
-          padding: constants.buttonPadding,
-          fontSize: constants.buttonFontSize,
           border: `solid ${colors.borderColor} 1px`,
-          borderRadius: constants.borderRadius,
           color: colors.btnColor,
           background: isCollapsed
             ? colors.collapsedBtnBg
             : colors.expandedBtnBg,
           transform: isCollapsed ? "scaleY(1)" : "scaleY(-1)",
-          width: "auto",
-          height: "auto",
+          ...constants.buttonStyles,
         },
         onClick: () => {
-          // Read the current state from the article's attribute
-          const isCollapsed = article.getAttribute("data-is-collapsed") === "true";
-          toggleArticle(article, collapseExpandBtn, !isCollapsed);
+          const currentlyCollapsed =
+            article.getAttribute("data-is-collapsed") === "true";
+          toggleCollapseExpandState(
+            article,
+            collapseExpandBtn,
+            !currentlyCollapsed
+          );
         },
       });
 
@@ -135,84 +140,73 @@
         article.querySelector("div > div > div > div") || article;
       targetContainer.appendChild(collapseExpandBtn);
       targetContainer.style.position = "relative";
-
       if (isCollapsed) addFadeEffect(article);
     });
-  }
+  };
 
-  function placeGlobalBtn(globalBtn, targetElement) {
-    if (!targetElement) {
-      console.error("Target element not found.");
-      return;
-    }
+  const toggleAllArticles = () => {
+    const articles = document.querySelectorAll("article");
+    const someExpanded = Array.from(articles).some(
+      (article) => article.getAttribute("data-is-collapsed") === "false"
+    );
 
-    const targetRect = targetElement.getBoundingClientRect();
-    const bodyRect = document.body.getBoundingClientRect();
+    allCollapsed = someExpanded; // If any article is expanded, collapse all; otherwise, expand all
 
-    const buttonBottom = bodyRect.bottom - targetRect.top - 51;
-    const buttonRight = bodyRect.right - targetRect.right + 11;
+    articles.forEach((article) => {
+      const btn = article.querySelector(".collapse-expand-btn");
+      if (btn) toggleCollapseExpandState(article, btn, allCollapsed);
+    });
 
-    globalBtn.style.bottom = `${buttonBottom}px`;
-    globalBtn.style.right = `${buttonRight}px`;
-  }
+    document.querySelector(".global-collapse-expand-btn").style.background =
+      allCollapsed ? colors.collapsedBtnBg : colors.expandedBtnBg;
+  };
 
-  function addGlobalCollapseButton() {
+  const addGlobalCollapseButton = () => {
     if (document.querySelector(".global-collapse-expand-btn")) return;
 
-    let allCollapsed = true;
     const globalBtn = createButton({
       text: "▼ ▲",
       title: "Collapse/Expand All",
       className: "global-collapse-expand-btn",
       styles: {
-        position: "absolute",
-        bottom: "20px",
-        right: "11px",
-        zIndex: "1",
         cursor: "pointer",
-        padding: "7px 8px",
-        fontSize: constants.globalButtonFontSize,
         border: `solid ${colors.borderColor} 1px`,
         background: colors.collapsedBtnBg,
         color: colors.globalBtnColor,
-        borderRadius: constants.globalBorderRadius,
+        ...constants.globalButtonStyles,
       },
-      onClick: () => {
-        document.querySelectorAll("article").forEach((article) => {
-          const btn = article.querySelector(".collapse-expand-btn");
-          if (btn) {
-            const isCollapsed = article.getAttribute("data-is-collapsed") === "true";
-            toggleArticle(article, btn, allCollapsed);
-          }
-        });
-        allCollapsed = !allCollapsed;
-        globalBtn.style.background = allCollapsed
-          ? colors.collapsedBtnBg
-          : colors.expandedBtnBg;
-      },
+      onClick: toggleAllArticles,
     });
 
     document.body.appendChild(globalBtn);
-    const targetElement = document.querySelector(
-      "body > div.flex.h-full.w-full.flex-col > div > div.relative.flex.h-full.w-full.flex-row.overflow-hidden > div > main > div.composer-parent.flex.flex-col.focus-visible\\:outline-0.h-full > div.md\\:pt-0.dark\\:border-white\\/20.md\\:border-transparent.md\\:dark\\:border-transparent.w-full.isolate.has-\\[\\[data-has-thread-error\\]\\]\\:\\[box-shadow\\:var\\(--sharp-edge-bottom-shadow\\)\\].has-\\[\\[data-has-thread-error\\]\\]\\:pt-2 > div > div.m-auto.text-base.px-3.md\\:px-4.w-full.md\\:px-5.lg\\:px-4.xl\\:px-5 > div > form"
-    );
-    placeGlobalBtn(globalBtn, targetElement);
-  }
+    observeFormChanges(globalBtn);
+  };
 
-  function observeMutations() {
-    new MutationObserver((mutationsList) => {
-      for (const mutation of mutationsList) {
-        if (mutation.type === "childList") {
-          addCollapseExpandButtons();
-        }
+  /* ------------------------ Observers ------------------------ */
+
+  const observeFormChanges = (globalBtn) => {
+    new MutationObserver(() => {
+      const formElement = document.querySelector("form");
+      if (formElement && !formElement.contains(globalBtn)) {
+        formElement.appendChild(globalBtn);
+        formElement.style.position = "relative";
       }
-    }).observe(document.body, {
-      childList: true,
-      subtree: true,
-    });
-  }
+    }).observe(document.body, { childList: true, subtree: true });
+  };
+
+  const observeMutations = () => {
+    new MutationObserver(() => addCollapseExpandButtons()).observe(
+      document.body,
+      {
+        childList: true,
+        subtree: true,
+      }
+    );
+  };
+
+  /* ------------------------ Initialization ------------------------ */
 
   observeMutations();
   addGlobalCollapseButton();
-  addCollapseExpandButtons(); // Initialize buttons for existing articles
+  addCollapseExpandButtons();
 })();

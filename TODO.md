@@ -1,6 +1,8 @@
 # TODO List
 
 ## 🔧 Known Issues
+- [ ] page isn't auto-scrolling when new messages arrive.
+- [ ] for the first time i click on the global button it does not work but when i click again it works.
 - [x] Place the global button in the form area. (fixed in version 1.4)
 - [x] Modify the height of the last message on ChatGPT responding. (fixed in version 1.4)
 - [x] Remove white space below the last message while messages are collapsed (fixed in version 1.4)
