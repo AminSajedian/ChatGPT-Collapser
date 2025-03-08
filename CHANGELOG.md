@@ -2,10 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5] - 2025-03-08
+### Fixed
+- Place the global button next to the question button on the bottom right corner of the page.
+- Fixed issue where the global collapse/expand button did not properly handle new messages (articles).
+
 ## [1.4] - 2025-03-01
 ### Fixed
-- Place the global button in the form area.
-- Fixed issue where the global collapse/expand button did not properly handle new messages (articles).
 - Ensured the global button dynamically applies to all articles, including newly added ones.
 - Resolved the need for double-clicking individual collapse/expand buttons after using the global button.
 
