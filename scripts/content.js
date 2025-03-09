@@ -33,7 +33,7 @@
       fontSize: "10px",
       borderRadius: "10px",
       position: "fixed",
-      bottom: "6px",
+      bottom: "12px",
       right: "40px",
       zIndex: "1",
     },

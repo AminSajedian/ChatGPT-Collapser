@@ -2,7 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.5] - 2025-03-08
+## [1.5] - 2025-03-09
+### Added
+- Feature of collapseExpandBtn stays in top-right corner during scrolling
+
 ### Fixed
 - Place the global button next to the question button on the bottom right corner of the page.
 - Fixed issue where the global collapse/expand button did not properly handle new messages (articles).
