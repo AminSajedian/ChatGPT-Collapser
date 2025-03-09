@@ -56,16 +56,31 @@
    * Toggles the collapse/expand state of an article.
    */
   const toggleCollapseExpandState = (article, button, collapse) => {
-    article.style.maxHeight = collapse
-      ? constants.maxCollapsedHeight
-      : `${article.scrollHeight}px`;
-    article.style.overflow = collapse ? "hidden" : "visible";
+    if (collapse) {
+      // Scroll to the top of the article before collapsing
+      article.scrollIntoView({ block: "start" });
 
-    button.style.background = collapse ? colors.collapsedBtnBg : colors.expandedBtnBg;
-    button.style.transform = collapse ? "scaleY(1)" : "scaleY(-1)";
+      // Delay collapsing slightly to allow scrolling to complete
+      setTimeout(() => {
+        article.style.maxHeight = constants.maxCollapsedHeight;
+        article.style.overflow = "hidden";
+        article.setAttribute("data-is-collapsed", "true");
 
-    collapse ? addFadeEffect(article) : removeFadeEffect(article);
-    article.setAttribute("data-is-collapsed", collapse);
+        button.style.background = colors.collapsedBtnBg;
+        button.style.transform = "scaleY(1)";
+
+        addFadeEffect(article);
+      }, 500); // Adjust delay if necessary
+    } else {
+      article.style.maxHeight = `${article.scrollHeight}px`;
+      article.style.overflow = "visible";
+      article.setAttribute("data-is-collapsed", "false");
+
+      button.style.background = colors.expandedBtnBg;
+      button.style.transform = "scaleY(-1)";
+
+      removeFadeEffect(article);
+    }
   };
 
   /**
@@ -105,21 +120,37 @@
   /**
    * Adds collapse/expand buttons to all articles.
    */
-  const addCollapseExpandButtons = () => {
+  const addCollapseBtns = () => {
     document.querySelectorAll("article").forEach((article) => {
-      if (article.querySelector(".collapse-expand-btn")) return;
+      if (article.querySelector(".collapse-btn-wrapper")) return;
 
       article.setAttribute("data-is-collapsed", "false");
       const isCollapsed = false;
 
+      // Ensure the article itself is scrollable for proper button positioning
       Object.assign(article.style, {
         clipPath: "inset(0 0 0 0)",
         transition: "max-height 0.5s ease-out, overflow 0.5s ease-out",
         maxHeight: isCollapsed ? constants.maxCollapsedHeight : "none",
         overflow: isCollapsed ? "hidden" : "visible",
+        position: "relative",
       });
 
-      const collapseExpandBtn = createButton({
+      // Create a wrapper for the button
+      const collapseBtnWrapper = document.createElement("div");
+      collapseBtnWrapper.className = "collapse-btn-wrapper";
+      Object.assign(collapseBtnWrapper.style, {
+        position: "sticky",
+        top: "0px",
+        zIndex: "10", // Ensures it stays on top
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        background: "rgba(255, 255, 255, 0.7)", // Semi-transparent background
+      });
+
+      // Create the collapse/expand button
+      const collapseBtn = createButton({
         text: constants.collapseExpandBtnText,
         title: "Collapse/Expand",
         className: "collapse-expand-btn",
@@ -130,20 +161,23 @@
           cursor: "pointer",
           border: `solid ${colors.borderColor} 1px`,
           color: colors.btnColor,
-          background: isCollapsed ? colors.collapsedBtnBg : colors.expandedBtnBg,
+          background: isCollapsed
+            ? colors.collapsedBtnBg
+            : colors.expandedBtnBg,
           transform: isCollapsed ? "scaleY(1)" : "scaleY(-1)",
           ...constants.buttonStyles,
         },
         onClick: () => {
           const currentlyCollapsed =
             article.getAttribute("data-is-collapsed") === "true";
-          toggleCollapseExpandState(article, collapseExpandBtn, !currentlyCollapsed);
+          toggleCollapseExpandState(article, collapseBtn, !currentlyCollapsed);
         },
       });
 
+      collapseBtnWrapper.appendChild(collapseBtn);
       const targetContainer =
         article.querySelector("div > div > div > div") || article;
-      targetContainer.appendChild(collapseExpandBtn);
+      targetContainer.prepend(collapseBtnWrapper);
       targetContainer.style.position = "relative";
 
       if (isCollapsed) addFadeEffect(article);
@@ -201,13 +235,10 @@
    * Observes DOM mutations to dynamically add collapse/expand buttons.
    */
   const observeMutations = () => {
-    new MutationObserver(() => addCollapseExpandButtons()).observe(
-      document.body,
-      {
-        childList: true,
-        subtree: true,
-      }
-    );
+    new MutationObserver(() => addCollapseBtns()).observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
   };
 
   /* ------------------------ Initialization ------------------------ */

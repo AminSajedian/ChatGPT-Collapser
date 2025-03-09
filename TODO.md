@@ -11,7 +11,7 @@
 - [x] Default Copy and Edit buttons of code block do not stick to the top on scrolling after enabling this extension. (fixed in version 1.1)
 
 ## 🚀 Planned Features
-- [ ] Add a sticky position to the collapse/expand buttons to be accessable. 
+- [x] Add a sticky position to the collapse/expand buttons to be accessable. (added in version 1.5)
 - [ ] Add a settings page to customize collapse behavior.
 - [ ] Allow users to change the collapsed message height.
 - [ ] Improve UI/UX for a better user experience; adding "default_popup": "popup.html", and  "default_title": "Open ChatGPT Collapser" to the manifest.json.
