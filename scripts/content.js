@@ -152,11 +152,11 @@
       // Create the collapse/expand button
       const collapseBtn = createButton({
         text: constants.collapseExpandBtnText,
-        title: "Collapse/Expand",
+        title: "Collapse/Expand Message",
         className: "collapse-expand-btn",
         styles: {
           position: "absolute",
-          top: "0px",
+          top: "10px",
           right: "-30px",
           cursor: "pointer",
           border: `solid ${colors.borderColor} 1px`,
@@ -214,7 +214,7 @@
 
     const globalBtn = createButton({
       text: "▼▲",
-      title: "Collapse/Expand All",
+      title: "Collapse/Expand All Messages",
       className: "global-collapse-expand-btn",
       styles: {
         cursor: "pointer",
