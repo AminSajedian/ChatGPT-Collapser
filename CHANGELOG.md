@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.6] - 2025-03-15
+### Added
+- Collapse the target element (`collapseEl`) instead of the entire article element, ensuring action buttons remain visible in the collapsed state.
+
 ## [1.5] - 2025-03-09
 ### Added
 - Feature of collapseExpandBtn stays in top-right corner during scrolling

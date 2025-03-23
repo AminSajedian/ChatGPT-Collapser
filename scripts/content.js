@@ -53,43 +53,48 @@
   };
 
   /**
-   * Toggles the collapse/expand state of an article.
+   * Toggles the collapse/expand state of an collapseEl.
    */
-  const toggleCollapseExpandState = (article, button, collapse) => {
+  const toggleCollapseExpandState = (article, collapseEl, button, collapse) => {
+    console.log("🚀 ~ toggleCollapseExpandState ~ article:", article);
+    console.log("🚀 ~ toggleCollapseExpandState ~ collapseEl:", collapseEl);
+    console.log("🚀 ~ toggleCollapseExpandState ~ button:", button);
+    console.log("🚀 ~ toggleCollapseExpandState ~ collapse:", collapse);
     if (collapse) {
-      // Scroll to the top of the article before collapsing
-      article.scrollIntoView({ block: "start" });
+      // Scroll to the top of the collapseEl before collapsing
+      collapseEl.scrollIntoView({ block: "start" });
 
       // Delay collapsing slightly to allow scrolling to complete
       setTimeout(() => {
-        article.style.maxHeight = constants.maxCollapsedHeight;
-        article.style.overflow = "hidden";
+        collapseEl.style.maxHeight = constants.maxCollapsedHeight;
+        collapseEl.style.overflow = "hidden";
         article.setAttribute("data-is-collapsed", "true");
 
         button.style.background = colors.collapsedBtnBg;
         button.style.transform = "scaleY(1)";
 
-        addFadeEffect(article);
+        addFadeEffect(collapseEl);
       }, 500); // Adjust delay if necessary
     } else {
-      article.style.maxHeight = `${article.scrollHeight}px`;
-      article.style.overflow = "visible";
+      collapseEl.style.maxHeight = `${collapseEl.scrollHeight}px`;
+      collapseEl.style.overflow = "visible";
       article.setAttribute("data-is-collapsed", "false");
 
       button.style.background = colors.expandedBtnBg;
       button.style.transform = "scaleY(-1)";
 
-      removeFadeEffect(article);
+      removeFadeEffect(collapseEl);
     }
   };
 
   /**
-   * Adds a fade effect to the bottom of the article.
+   * Adds a fade effect to the bottom of the collapseEl.
    */
-  const addFadeEffect = (article) => {
-    if (article.querySelector(".fade-effect")) return;
+  const addFadeEffect = (collapseEl) => {
+    if (collapseEl.querySelector(".fade-effect")) return;
 
-    const target = article.querySelector("div > div > div > div") || article;
+    const target =
+      collapseEl.querySelector("div > div > div > div") || collapseEl;
     const fadeDiv = document.createElement("div");
     fadeDiv.className = "fade-effect";
 
@@ -104,15 +109,15 @@
       pointerEvents: "none",
     });
 
-    article.style.position = "relative";
-    article.appendChild(fadeDiv);
+    collapseEl.style.position = "relative";
+    collapseEl.appendChild(fadeDiv);
   };
 
   /**
-   * Removes the fade effect from the article.
+   * Removes the fade effect from the collapseEl.
    */
-  const removeFadeEffect = (article) => {
-    article.querySelector(".fade-effect")?.remove();
+  const removeFadeEffect = (collapseEl) => {
+    collapseEl.querySelector(".fade-effect")?.remove();
   };
 
   /* ------------------------ Main Functions ------------------------ */
@@ -123,12 +128,19 @@
   const addCollapseBtns = () => {
     document.querySelectorAll("article").forEach((article) => {
       if (article.querySelector(".collapse-btn-wrapper")) return;
+      const targetContainer =
+        article.querySelector("div > div > div > div") || article;
+
+      // article > div > div > div > div > div
+      const collapseEl =
+        article.querySelector("div > div > div > div > div") || article;
+      collapseEl.classList.add("collapse-Element");
 
       article.setAttribute("data-is-collapsed", "false");
       const isCollapsed = false;
 
-      // Ensure the article itself is scrollable for proper button positioning
-      Object.assign(article.style, {
+      // Ensure the collapseEl itself is scrollable for proper button positioning
+      Object.assign(collapseEl.style, {
         clipPath: "inset(0 0 0 0)",
         transition: "max-height 0.5s ease-out, overflow 0.5s ease-out",
         maxHeight: isCollapsed ? constants.maxCollapsedHeight : "none",
@@ -170,13 +182,20 @@
         onClick: () => {
           const currentlyCollapsed =
             article.getAttribute("data-is-collapsed") === "true";
-          toggleCollapseExpandState(article, collapseBtn, !currentlyCollapsed);
+          console.log(
+            "🚀 ~ addCollapseBtns ~ currentlyCollapsed:",
+            currentlyCollapsed
+          );
+          toggleCollapseExpandState(
+            article,
+            collapseEl,
+            collapseBtn,
+            !currentlyCollapsed
+          );
         },
       });
 
       collapseBtnWrapper.appendChild(collapseBtn);
-      const targetContainer =
-        article.querySelector("div > div > div > div") || article;
       targetContainer.prepend(collapseBtnWrapper);
       targetContainer.style.position = "relative";
 
@@ -194,8 +213,12 @@
     );
 
     articles.forEach((article) => {
+      const collapseEl = article.querySelector(".collapse-Element") || article;
+      console.log("🚀 ~ toggleAllArticles ~ collapseEl:", collapseEl);
+
       const btn = article.querySelector(".collapse-expand-btn");
-      if (btn) toggleCollapseExpandState(article, btn, someExpanded);
+      if (btn)
+        toggleCollapseExpandState(article, collapseEl, btn, someExpanded);
     });
 
     const globalBtn = document.querySelector(".global-collapse-expand-btn");
@@ -235,7 +258,10 @@
    * Observes DOM mutations to dynamically add collapse/expand buttons.
    */
   const observeMutations = () => {
-    new MutationObserver(() => addCollapseBtns()).observe(document.body, {
+    new MutationObserver(() => {
+      addGlobalCollapseButton();
+      addCollapseBtns();
+    }).observe(document.body, {
       childList: true,
       subtree: true,
     });
@@ -244,5 +270,4 @@
   /* ------------------------ Initialization ------------------------ */
 
   observeMutations();
-  addGlobalCollapseButton();
 })();

@@ -12,6 +12,8 @@ ChatGPT Collapser is a browser extension that enhances the readability of ChatGP
 
 🔹 **Minimal UI Impact** - Integrates neatly with ChatGPT's interface.
 
+🔹 **Action Buttons Remain Visible** - Collapses only the message content, keeping action buttons (e.g., copy, edit) accessible in the collapsed state.
+
 ## 📂 Installation
 ### 🔹 From Chrome Web Store
 You can now install the extension directly from the Chrome Web Store:
@@ -29,6 +31,8 @@ You can now install the extension directly from the Chrome Web Store:
 🔹 Click the **collapse/expand button** next to each message to toggle visibility.
 
 🔹 Use the **global collapse/expand button** (bottom-right corner of the page) to collapse or expand all messages at once.
+
+🔹 Action buttons (e.g., copy, edit) remain visible even when the message content is collapsed.
 
 ## 📝 Known Issues & Future Improvements
 🔹 🔜 Plan to add a settings page for custom behavior.
