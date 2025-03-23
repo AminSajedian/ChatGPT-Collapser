@@ -60,29 +60,30 @@
     console.log("🚀 ~ toggleCollapseExpandState ~ collapseEl:", collapseEl);
     console.log("🚀 ~ toggleCollapseExpandState ~ button:", button);
     console.log("🚀 ~ toggleCollapseExpandState ~ collapse:", collapse);
+  
     if (collapse) {
-      // Scroll to the top of the collapseEl before collapsing
-      collapseEl.scrollIntoView({ block: "start" });
-
-      // Delay collapsing slightly to allow scrolling to complete
+      // Smoothly scroll to the top of the collapseEl before collapsing
+      collapseEl.scrollIntoView({ behavior: "smooth", block: "start" });
+  
+      // Delay collapsing slightly to allow smooth scrolling to complete
       setTimeout(() => {
         collapseEl.style.maxHeight = constants.maxCollapsedHeight;
         collapseEl.style.overflow = "hidden";
         article.setAttribute("data-is-collapsed", "true");
-
+  
         button.style.background = colors.collapsedBtnBg;
         button.style.transform = "scaleY(1)";
-
+  
         addFadeEffect(collapseEl);
-      }, 500); // Adjust delay if necessary
+      }, 300); // Reduced delay for smoother transition
     } else {
       collapseEl.style.maxHeight = `${collapseEl.scrollHeight}px`;
       collapseEl.style.overflow = "visible";
       article.setAttribute("data-is-collapsed", "false");
-
+  
       button.style.background = colors.expandedBtnBg;
       button.style.transform = "scaleY(-1)";
-
+  
       removeFadeEffect(collapseEl);
     }
   };
