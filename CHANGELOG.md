@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.7] - 2025-03-20
+### Fixed
+- Prevented scroll jumps when collapsing/expanding all messages
+- Removed debug console.log statements from production code
+
+### Added
+- Optional scroll control parameter for toggleCollapseExpandState
+- Comprehensive JSDoc documentation for all major functions
+
+### Changed
+- Improved toggle behavior with scroll suppression for global operations
+- Enhanced code organization and readability
+
 ## [1.6] - 2025-03-15
 ### Added
 - Collapse the target element (`collapseEl`) instead of the entire article element, ensuring action buttons remain visible in the collapsed state.

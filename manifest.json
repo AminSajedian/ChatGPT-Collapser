@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "ChatGPT Collapser",
-  "version": "1.6",
+  "version": "1.7",
   "description": "Optimize your ChatGPT experience by collapsing long messages for a cleaner, more organized view.",
   "author": "Amin Sajedian",
   "host_permissions": ["https://chat.openai.com/*", "https://chatgpt.com/*"],

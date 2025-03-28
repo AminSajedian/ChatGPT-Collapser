@@ -1,9 +1,16 @@
 (function () {
-  "use strict";
+  ("use strict");
 
   /* ------------------------ Constants & Variables ------------------------ */
 
   const htmlElement = document.documentElement;
+
+  /**
+   * Retrieves a CSS variable's value with a fallback if undefined.
+   * @param {string} varName - The name of the CSS variable.
+   * @param {string} fallback - The fallback value if the variable is not found.
+   * @returns {string} - The value of the CSS variable or the fallback.
+   */
   const getCSSVar = (varName, fallback) =>
     getComputedStyle(htmlElement).getPropertyValue(varName).trim() || fallback;
 
@@ -42,7 +49,14 @@
   /* ------------------------ Helper Functions ------------------------ */
 
   /**
-   * Creates a button element with the specified properties.
+   * Creates a button element with specified properties.
+   * @param {Object} config - Button configuration.
+   * @param {string} config.text - Button label.
+   * @param {string} config.title - Tooltip text.
+   * @param {string} config.className - Class name to apply.
+   * @param {Object} config.styles - CSS styles to apply.
+   * @param {Function} config.onClick - Click handler.
+   * @returns {HTMLButtonElement} - Configured button element.
    */
   const createButton = ({ text, title, className, styles, onClick }) => {
     const button = document.createElement("button");
@@ -53,43 +67,53 @@
   };
 
   /**
-   * Toggles the collapse/expand state of an collapseEl.
+   * Toggles the collapse or expand state of a target element within an article.
+   * @param {HTMLElement} article - The article element.
+   * @param {HTMLElement} collapseEl - The target content container to collapse/expand.
+   * @param {HTMLElement} button - The associated toggle button.
+   * @param {boolean} collapse - Whether to collapse (true) or expand (false).
+   * @param {Object} [options] - Optional settings.
+   * @param {boolean} [options.shouldScroll=true] - Whether to scroll into view when collapsing.
    */
-  const toggleCollapseExpandState = (article, collapseEl, button, collapse) => {
-    console.log("🚀 ~ toggleCollapseExpandState ~ article:", article);
-    console.log("🚀 ~ toggleCollapseExpandState ~ collapseEl:", collapseEl);
-    console.log("🚀 ~ toggleCollapseExpandState ~ button:", button);
-    console.log("🚀 ~ toggleCollapseExpandState ~ collapse:", collapse);
-  
+  const toggleCollapseExpandState = (
+    article,
+    collapseEl,
+    button,
+    collapse,
+    options = { shouldScroll: true }
+  ) => {
+    const { shouldScroll } = options;
+
     if (collapse) {
-      // Smoothly scroll to the top of the collapseEl before collapsing
-      collapseEl.scrollIntoView({ behavior: "smooth", block: "start" });
-  
-      // Delay collapsing slightly to allow smooth scrolling to complete
+      if (shouldScroll) {
+        collapseEl.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+
       setTimeout(() => {
         collapseEl.style.maxHeight = constants.maxCollapsedHeight;
         collapseEl.style.overflow = "hidden";
         article.setAttribute("data-is-collapsed", "true");
-  
+
         button.style.background = colors.collapsedBtnBg;
         button.style.transform = "scaleY(1)";
-  
+
         addFadeEffect(collapseEl);
-      }, 300); // Reduced delay for smoother transition
+      }, 300);
     } else {
       collapseEl.style.maxHeight = `${collapseEl.scrollHeight}px`;
       collapseEl.style.overflow = "visible";
       article.setAttribute("data-is-collapsed", "false");
-  
+
       button.style.background = colors.expandedBtnBg;
       button.style.transform = "scaleY(-1)";
-  
+
       removeFadeEffect(collapseEl);
     }
   };
 
   /**
-   * Adds a fade effect to the bottom of the collapseEl.
+   * Adds a gradient fade effect to the bottom of a collapsible element.
+   * @param {HTMLElement} collapseEl - The target element.
    */
   const addFadeEffect = (collapseEl) => {
     if (collapseEl.querySelector(".fade-effect")) return;
@@ -115,7 +139,8 @@
   };
 
   /**
-   * Removes the fade effect from the collapseEl.
+   * Removes the fade effect from a collapsible element.
+   * @param {HTMLElement} collapseEl - The element from which to remove the effect.
    */
   const removeFadeEffect = (collapseEl) => {
     collapseEl.querySelector(".fade-effect")?.remove();
@@ -124,15 +149,14 @@
   /* ------------------------ Main Functions ------------------------ */
 
   /**
-   * Adds collapse/expand buttons to all articles.
+   * Adds collapse/expand toggle buttons to all article elements in the DOM.
    */
   const addCollapseBtns = () => {
     document.querySelectorAll("article").forEach((article) => {
       if (article.querySelector(".collapse-btn-wrapper")) return;
+
       const targetContainer =
         article.querySelector("div > div > div > div") || article;
-
-      // article > div > div > div > div > div
       const collapseEl =
         article.querySelector("div > div > div > div > div") || article;
       collapseEl.classList.add("collapse-Element");
@@ -140,7 +164,6 @@
       article.setAttribute("data-is-collapsed", "false");
       const isCollapsed = false;
 
-      // Ensure the collapseEl itself is scrollable for proper button positioning
       Object.assign(collapseEl.style, {
         clipPath: "inset(0 0 0 0)",
         transition: "max-height 0.5s ease-out, overflow 0.5s ease-out",
@@ -149,20 +172,18 @@
         position: "relative",
       });
 
-      // Create a wrapper for the button
       const collapseBtnWrapper = document.createElement("div");
       collapseBtnWrapper.className = "collapse-btn-wrapper";
       Object.assign(collapseBtnWrapper.style, {
         position: "sticky",
         top: "0px",
-        zIndex: "10", // Ensures it stays on top
+        zIndex: "10",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        background: "rgba(255, 255, 255, 0.7)", // Semi-transparent background
+        background: "rgba(255, 255, 255, 0.7)",
       });
 
-      // Create the collapse/expand button
       const collapseBtn = createButton({
         text: constants.collapseExpandBtnText,
         title: "Collapse/Expand Message",
@@ -183,10 +204,6 @@
         onClick: () => {
           const currentlyCollapsed =
             article.getAttribute("data-is-collapsed") === "true";
-          console.log(
-            "🚀 ~ addCollapseBtns ~ currentlyCollapsed:",
-            currentlyCollapsed
-          );
           toggleCollapseExpandState(
             article,
             collapseEl,
@@ -205,7 +222,7 @@
   };
 
   /**
-   * Toggles the collapse/expand state of all articles.
+   * Toggles the collapsed/expanded state of all article elements simultaneously.
    */
   const toggleAllArticles = () => {
     const articles = document.querySelectorAll("article");
@@ -215,11 +232,11 @@
 
     articles.forEach((article) => {
       const collapseEl = article.querySelector(".collapse-Element") || article;
-      console.log("🚀 ~ toggleAllArticles ~ collapseEl:", collapseEl);
-
       const btn = article.querySelector(".collapse-expand-btn");
       if (btn)
-        toggleCollapseExpandState(article, collapseEl, btn, someExpanded);
+        toggleCollapseExpandState(article, collapseEl, btn, someExpanded, {
+          shouldScroll: false,
+        });
     });
 
     const globalBtn = document.querySelector(".global-collapse-expand-btn");
@@ -231,7 +248,7 @@
   };
 
   /**
-   * Adds the global collapse/expand button to the body.
+   * Appends a global button to the DOM that toggles all article collapses.
    */
   const addGlobalCollapseButton = () => {
     if (document.querySelector(".global-collapse-expand-btn")) return;
@@ -256,7 +273,8 @@
   /* ------------------------ Observers ------------------------ */
 
   /**
-   * Observes DOM mutations to dynamically add collapse/expand buttons.
+   * Initializes a MutationObserver to dynamically manage collapse buttons
+   * when new article elements are added to the DOM.
    */
   const observeMutations = () => {
     new MutationObserver(() => {
